@@ -1,0 +1,10 @@
+{
+  "plugins": {
+    "node": [
+      "koa",
+      "http",
+      "fs",
+      "koa-router"
+    ]
+  }
+}

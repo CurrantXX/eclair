@@ -1,0 +1,35 @@
+{
+  "name": "eclair",
+  "version": "0.0.1",
+  "description": "web server starter",
+  "main": "index.js",
+  "scripts": {
+    "start": "node --harmony babel.index",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CurrantXX/eclair"
+  },
+  "author": "CurrantXX (CurrantXX@gmail.com)",
+  "license": "MIT",
+  "dependencies": {
+    "babel-core": "^6.18.2",
+    "babel-eslint": "^6.1.2",
+    "babel-polyfill": "^6.16.0",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-stage-0": "^6.16.0",
+    "babel-register": "^6.18.0",
+    "bcrypt": "^0.8.7",
+    "eslint": "^3.10.2",
+    "koa": "^2.0.0",
+    "koa-bodyparser": "^3.2.0",
+    "koa-compose": "^2.5.1",
+    "koa-logger": "^1.3.0",
+    "koa-router": "^7.0.1",
+    "mongoose": "^4.6.8",
+    "mysql": "^2.12.0",
+    "sequelize": "^3.27.0",
+    "validator": "^6.1.0"
+  }
+}
