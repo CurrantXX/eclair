@@ -14,6 +14,7 @@ if(config.app.debug) {
 const sequelize = new Sequelize(config.db.database, config.db.username,
   config.db.password, config.db.options);
 
+Mongoose.Promise = require("bluebird");
 Mongoose.connect(config.mongo.uri, config.mongo.options);
 
 module.exports = {
