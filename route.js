@@ -15,4 +15,4 @@ const combineRouters = routers => {
 
 const route = combineRouters([user, game]);
 
-module.exports = game.routes();
+module.exports = user.routes();

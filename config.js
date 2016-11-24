@@ -9,7 +9,7 @@ module.exports = {
     password: "root",
     options: {
       dialect: "mysql",
-      host: "localhost",
+      host: "127.0.0.1",
       port: 3306,
       pool: {
         max: 5,
@@ -19,7 +19,7 @@ module.exports = {
     }
   },
   mongo: {
-    uri: "mongodb://localhost:27017/24haowan",
+    uri: "mongodb://127.0.0.1:27017/24haowan",
     options: {
       db: {},
       server: {
@@ -27,5 +27,12 @@ module.exports = {
       }
     }
   },
-  redis: {}
+  redis: {
+    host: "127.0.0.1",
+    port: 6379,
+    // path: null,
+    // url: null,
+    // db: null,
+    // password: null
+  }
 };

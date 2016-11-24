@@ -2,37 +2,11 @@ const Router = require("koa-router");
 const bodyParser = require("koa-bodyparser");
 const validator = require("validator");
 const bcrypt = require("bcrypt");
-const config = require("../config.js");
-const User = require("../entity/user.js");
+const redis = require("../cache.js");
 
 const router = new Router({
   prefix: "/api/users"
 });
-
-const userService = {
-  encryptPassword: async(password) => {
-    const saltRound = 10;
-    return await bcrypt.hashSync(password, saltRound);
-  },
-  checkPassword: async(password, hash) => {
-    return await bcrypt.compareSync(password, hash);
-  },
-};
-
-const userMiddleware = {
-  getUser: async(userId, ctx, next) => {
-    console.log(userId);
-    if (validator.isInt(userId)) {
-      const user = await User.findById(userId);
-      if (user) {
-        ctx.user = user;
-        await next();
-        return;
-      }
-    }
-    ctx.body = "404";
-  }
-};
 
 const userHanlder = {
   getDetail: async(ctx, next) => {
@@ -40,8 +14,18 @@ const userHanlder = {
       user: ctx.user
     };
   },
+
   getList: async(ctx, next) => {
-    const users = await User.findAll();
+    let users = [];
+    try {
+      users = JSON.parse(await redis.getAsync("users"));
+    } catch(e) {
+      users = [];
+    }
+    if(users === null || users.length === 0) {
+      users = await User.findAll();
+      await redis.setAsync("users", JSON.stringify(users));
+    }
     ctx.body = {
       users: users
     };
@@ -77,8 +61,8 @@ const userHanlder = {
   }
 };
 
-router.use(bodyParser());
-router.get("/", userHanlder.getList)
+router.use(bodyParser())
+  .get("/", userHanlder.getList)
   .post("/", userHanlder.add)
   .param("userId", userMiddleware.getUser)
   .get("/:userId", userHanlder.getDetail)

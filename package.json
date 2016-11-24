@@ -21,6 +21,7 @@
     "babel-preset-stage-0": "^6.16.0",
     "babel-register": "^6.18.0",
     "bcrypt": "^0.8.7",
+    "bluebird": "^3.4.6",
     "eslint": "^3.10.2",
     "koa": "^2.0.0",
     "koa-bodyparser": "^3.2.0",
