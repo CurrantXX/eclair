@@ -1,6 +1,5 @@
-const bcrypt = require("bcrypt");
-const db = require("../database.js");
-const User = require("../entity/user.js");
+import bcrypt from "bcrypt";
+import User from "../entity/user.js";
 
 class UserService {
   constructor(transaction) {
@@ -61,4 +60,7 @@ class UserService {
   }
 }
 
-module.exports = UserService;
+export {
+  UserService as
+  default
+};

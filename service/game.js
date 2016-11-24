@@ -1,4 +1,4 @@
-const Game = require("../entity/game.js");
+import Game from "../entity/game.js";
 
 class GameService {
   constructor() {}
@@ -8,4 +8,7 @@ class GameService {
   }
 }
 
-module.exports = GameService;
+export {
+  GameService as
+  default
+};

@@ -1,9 +1,7 @@
-const config = require("./config.js");
-const Redis = require("redis");
-const BlueBird = require("bluebird");
+import config from "./config.js";
+import Redis from "redis";
+import BlueBird from "bluebird";
 
 BlueBird.promisifyAll(Redis.RedisClient.prototype);
 BlueBird.promisifyAll(Redis.Multi.prototype);
-const redisClient = Redis.createClient(config.redis);
-
-module.exports = redisClient;
+export const redisClient = Redis.createClient(config.redis);

@@ -1,4 +1,4 @@
-module.exports = {
+const config = {
   app: {
     debug: true,
     secret: "asAS2UBf_124(**)fs12455"
@@ -30,9 +30,10 @@ module.exports = {
   redis: {
     host: "127.0.0.1",
     port: 6379,
-    // path: null,
-    // url: null,
-    // db: null,
-    // password: null
   }
+};
+
+export {
+  config as
+  default
 };

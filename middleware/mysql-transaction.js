@@ -1,7 +1,9 @@
-const db = require("../database.js");
+import {
+  sequelize
+} from "../database.js";
 
-const transaction = (options={}) => async(ctx, next) => {
-  const tx = await db.seq.transaction(options);
+const transaction = (options = {}) => async(ctx, next) => {
+  const tx = await sequelize.transaction(options);
   ctx.tx = tx;
   try {
     await next();
@@ -12,4 +14,7 @@ const transaction = (options={}) => async(ctx, next) => {
   }
 };
 
-module.exports = transaction;
+export {
+  transaction as
+  default
+};

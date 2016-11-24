@@ -1,7 +1,9 @@
-const db = require("../database.js");
+import {
+  mongo
+} from "../database.js";
 
 
-const GameSchema = new db.mongo.Schema({
+const GameSchema = new mongo.Schema({
   _id: {
     type: String
   },
@@ -13,6 +15,9 @@ const GameSchema = new db.mongo.Schema({
   logo: String
 });
 
-const Game = db.mongo.model("Game", GameSchema);
+const Game = mongo.model("Game", GameSchema);
 
-module.exports = Game;
+export {
+  Game as
+  default
+};

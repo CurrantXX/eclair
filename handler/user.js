@@ -1,6 +1,7 @@
-const Router = require("koa-router");
-const UserService = require("../service/user.js");
-const transaction = require("../middleware/mysql-transaction.js");
+import Router from "koa-router";
+import UserService from "../service/user.js";
+import transaction from "../middleware/mysql-transaction.js";
+
 const router = new Router();
 
 const userHanlder = {
@@ -45,7 +46,7 @@ router.use(transaction())
   .post("/", userHanlder.add)
   .param("userId", async(userId, ctx, next) => {
     ctx.user = ctx.userService.getById(userId);
-    if(!ctx.user) {
+    if (!ctx.user) {
       throw new Error("user not found");
     }
     await next();
@@ -54,4 +55,7 @@ router.use(transaction())
   .put("/:userId", userHanlder.modify)
   .delete("/:userId", userHanlder.delete);
 
-module.exports = router;
+export {
+  router as
+  default
+};

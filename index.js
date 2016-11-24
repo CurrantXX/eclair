@@ -1,9 +1,10 @@
-const Koa = require("koa");
-const Logger = require("koa-logger");
+import Koa from "koa";
+import createLogger from "concurrency-logger";
+import router from "./route.js";
 
-const router = require("./route.js");
 const app = new Koa;
-const logger = Logger();
+const logger = createLogger();
+
 
 app.use(logger);
 app.use(router.routes());
