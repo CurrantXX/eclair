@@ -1,18 +1,28 @@
-const compose = require("koa-compose");
+const Router = require("koa-router");
+const db = require("./database.js");
+const bodyParser = require("koa-bodyparser");
+
 const user = require("./handler/user.js");
 const game = require("./handler/game.js");
 
-const combineRouters = routers => {
-  const middleware = [];
+const baseRouter = new Router({
+  prefix: "/api/v1"
+});
 
-  routers.forEach(router => {
-    middleware.push(router.routes());
-    middleware.push(router.allowedMethods());
-  });
-
-  return compose(middleware);
+const baseMiddleware = async(ctx, next) => {
+  const tx = await db.seq.transaction();
+  ctx.tx = tx;
+  try {
+    await next();
+    await tx.commit();
+  } catch(e) {
+    console.log(e);
+    await tx.rollback();
+  }
 };
 
-const route = combineRouters([user, game]);
+baseRouter.use(bodyParser(), baseMiddleware)
+  .use("/users", user.routes(), user.allowedMethods());
+  // .use("/games", game.routes(), game.allowedMethods());
 
-module.exports = user.routes();
+module.exports = baseRouter;

@@ -1,70 +1,56 @@
 const Router = require("koa-router");
-const bodyParser = require("koa-bodyparser");
 const validator = require("validator");
-const bcrypt = require("bcrypt");
-const redis = require("../cache.js");
 
-const router = new Router({
-  prefix: "/api/users"
-});
+const UserService = require("../service/user.js");
+
+const router = new Router();
 
 const userHanlder = {
+  getList: async(ctx, next) => {
+    ctx.body = {
+      users: ctx.userService.getAll()
+    };
+  },
+
+  add: async(ctx, next) => {
+    const user = await ctx.userService.create(ctx.request.body);
+    ctx.body = {
+      user: user
+    };
+  },
+
   getDetail: async(ctx, next) => {
     ctx.body = {
       user: ctx.user
     };
   },
 
-  getList: async(ctx, next) => {
-    let users = [];
-    try {
-      users = JSON.parse(await redis.getAsync("users"));
-    } catch(e) {
-      users = [];
-    }
-    if(users === null || users.length === 0) {
-      users = await User.findAll();
-      await redis.setAsync("users", JSON.stringify(users));
-    }
+  modify: async(ctx, next) => {
+    const user = await ctx.userService.modify(ctx.user, ctx.request.body);
     ctx.body = {
-      users: users
+      user: user
     };
   },
 
-  add: async(ctx, next) => {
-    const data = ctx.request.body;
-    if ("password" in data) {
-      data.password = await userService.encryptPassword(data.password);
-    }
-    await User.create(data).then((user) => {
-      ctx.body = user;
-    }).catch(error => {
-      ctx.body = "error: " + error;
-    });
-  },
-
-  modify: async(ctx, next) => {
-    const data = ctx.request.body;
-    if ("password" in data) {
-      data.password = await userService.encryptPassword(data.password);
-    }
-    await ctx.user.update(data).then(() => {
-      ctx.body = ctx.user;
-    }).catch(error => {
-      ctx.body = "error: " + error;
-    });
-  },
-
   delete: async(ctx, next) => {
-    await ctx.user.destroy();
+    await ctx.userService.delete(ctx.user);
     ctx.body = "ok";
   }
 };
 
-router.use(bodyParser())
+router.use(async(ctx, next) => {
+    ctx.userService = new UserService(ctx.tx);
+    await next();
+  })
   .get("/", userHanlder.getList)
   .post("/", userHanlder.add)
-  .param("userId", userMiddleware.getUser)
+  .param("userId", async(userId, ctx, next) => {
+    ctx.user = ctx.userService.getById(userId);
+    if(!ctx.user) {
+      throw new Error("user not found");
+    }
+    await next();
+  })
   .get("/:userId", userHanlder.getDetail)
   .put("/:userId", userHanlder.modify)
   .delete("/:userId", userHanlder.delete);
