@@ -1,18 +1,13 @@
 const Router = require("koa-router");
 const bodyParser = require("koa-bodyparser");
 const validator = require("validator");
-const Game = require("../entity/game.js");
+const GameService = require("../service/game.js");
 
-const router = new Router({
-  prefix: "/api/games"
-});
+const router = new Router();
 
 const gameHandler = {
   getList: async(ctx, next) => {
-    let games;
-    await Game.find().exec((err, results) => {
-      games = results;
-    });
+    const games = await ctx.gameService.getAll();
 
     ctx.body = {
       games: games
@@ -23,8 +18,10 @@ const gameHandler = {
   }
 };
 
-router.use(bodyParser());
-router.get("/", gameHandler.getList)
-  .get("/:gameId", gameHandler.getDetail);
+router.use(async(ctx, next) => {
+    ctx.gameService = new GameService(ctx.tx);
+    await next();
+  })
+  .get("/", gameHandler.getList);
 
 module.exports = router;

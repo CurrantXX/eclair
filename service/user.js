@@ -1,3 +1,4 @@
+const bcrypt = require("bcrypt");
 const db = require("../database.js");
 const User = require("../entity/user.js");
 
@@ -8,7 +9,8 @@ class UserService {
 
   async encryptPassword(password) {
     const saltRound = 10;
-    return await bcrypt.hashSync(password, saltRound);
+    const salt = await bcrypt.genSaltSync(saltRound);
+    return await bcrypt.hashSync(password, salt);
   }
 
   async checkPassword(password, hash) {
@@ -16,7 +18,7 @@ class UserService {
   }
 
   async getAll(offset, limit) {
-    const users = await User.findAll({}, {
+    const users = await User.findAll({
       transaction: this.tx
     });
     return users;

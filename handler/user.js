@@ -1,14 +1,12 @@
 const Router = require("koa-router");
-const validator = require("validator");
-
 const UserService = require("../service/user.js");
-
+const transaction = require("../middleware/mysql-transaction.js");
 const router = new Router();
 
 const userHanlder = {
   getList: async(ctx, next) => {
     ctx.body = {
-      users: ctx.userService.getAll()
+      users: await ctx.userService.getAll()
     };
   },
 
@@ -38,7 +36,8 @@ const userHanlder = {
   }
 };
 
-router.use(async(ctx, next) => {
+router.use(transaction())
+  .use(async(ctx, next) => {
     ctx.userService = new UserService(ctx.tx);
     await next();
   })
