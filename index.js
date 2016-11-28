@@ -2,12 +2,12 @@ import Koa from "koa";
 import createLogger from "concurrency-logger";
 import router from "./route.js";
 
-const app = new Koa;
+const server = new Koa;
 const logger = createLogger();
 
 
-app.use(logger);
-app.use(router.routes());
-app.use(router.allowedMethods());
+server.use(logger);
+server.use(router.routes());
+server.use(router.allowedMethods());
 
-app.listen(3000);
+export const app = server.listen(3000);
