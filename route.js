@@ -7,11 +7,6 @@ const baseRouter = new Router({
   prefix: "/api/v1"
 });
 
-baseRouter.use(bodyParser())
+export default baseRouter.use(bodyParser())
   .use("/users", user.routes(), user.allowedMethods())
   .use("/games", game.routes(), game.allowedMethods());
-
-export {
-  baseRouter as
-  default
-};

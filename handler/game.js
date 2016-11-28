@@ -18,10 +18,8 @@ const gameHandler = {
   }
 };
 
-router.use(async(ctx, next) => {
+export default router.use(async(ctx, next) => {
     ctx.gameService = new GameService(ctx.tx);
     await next();
   })
   .get("/", gameHandler.getList);
-
-module.exports = router;

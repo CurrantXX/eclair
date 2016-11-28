@@ -15,9 +15,4 @@ const GameSchema = new mongo.Schema({
   logo: String
 });
 
-const Game = mongo.model("Game", GameSchema);
-
-export {
-  Game as
-  default
-};
+export default mongo.model("Game", GameSchema);

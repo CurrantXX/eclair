@@ -1,13 +1,23 @@
 import Router from "koa-router";
 import UserService from "../service/user.js";
 import transaction from "../middleware/mysql-transaction.js";
+import cache from "../cache.js";
 
 const router = new Router();
 
 const userHanlder = {
   getList: async(ctx, next) => {
+    let users = await cache.getAsync("users");
+    if (users) {
+      users = JSON.parse(users);
+    } else {
+      users = await ctx.userService.getAll();
+      await cache.setAsync("users", JSON.stringify(users));
+      await cache.expireAsync("users", 5);
+    }
+
     ctx.body = {
-      users: await ctx.userService.getAll()
+      users: users
     };
   },
 
@@ -16,6 +26,7 @@ const userHanlder = {
     ctx.body = {
       user: user
     };
+    cache.delAsync("users");
   },
 
   getDetail: async(ctx, next) => {
@@ -29,6 +40,7 @@ const userHanlder = {
     ctx.body = {
       user: user
     };
+    cache.delAsync("users");
   },
 
   delete: async(ctx, next) => {
@@ -47,7 +59,10 @@ router.use(transaction())
   .param("userId", async(userId, ctx, next) => {
     ctx.user = ctx.userService.getById(userId);
     if (!ctx.user) {
-      throw new Error("user not found");
+      throw new Error({
+        msg: "User not found",
+        status: 400
+      });
     }
     await next();
   })

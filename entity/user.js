@@ -3,7 +3,7 @@ import {
   sequelize
 } from "../database.js";
 
-const User = sequelize.define("user", {
+export default sequelize.define("user", {
   username: Sequelize.STRING,
   password: Sequelize.STRING,
   first_name: Sequelize.STRING,
@@ -15,8 +15,3 @@ const User = sequelize.define("user", {
   deletedAt: "deleted_at",
   paranoid: true
 });
-
-export {
-  User as
-  default
-};

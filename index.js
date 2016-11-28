@@ -10,4 +10,4 @@ server.use(logger);
 server.use(router.routes());
 server.use(router.allowedMethods());
 
-export const app = server.listen(3000);
+export default server.listen(3000);

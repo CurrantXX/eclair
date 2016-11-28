@@ -1,4 +1,4 @@
-const config = {
+export default {
   app: {
     debug: true,
     secret: "asAS2UBf_124(**)fs12455"
@@ -31,9 +31,4 @@ const config = {
     host: "127.0.0.1",
     port: 6379,
   }
-};
-
-export {
-  config as
-  default
 };
