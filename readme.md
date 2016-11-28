@@ -1,5 +1,18 @@
 Node.JS web development stack
 ====
+
+## Usage
+### Run an application
+```bash
+npm start
+```
+
+### Run a testing
+```bash
+npm test
+```
+
+## Component
 ### Web 
 - [Koa@2](https://github.com/koajs/koa)
 
