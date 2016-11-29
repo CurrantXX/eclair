@@ -2,6 +2,7 @@ import Router from "koa-router";
 import UserService from "../service/user.js";
 import transaction from "../middleware/mysql-transaction.js";
 import cache from "../cache.js";
+import logger from "../logger.js";
 
 const router = new Router();
 
@@ -15,6 +16,7 @@ const userHanlder = {
       await cache.setAsync("users", JSON.stringify(users));
       await cache.expireAsync("users", 5);
     }
+    logger.error("testing logger");
 
     ctx.body = {
       users: users

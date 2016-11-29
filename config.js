@@ -30,5 +30,15 @@ export default {
   redis: {
     host: "127.0.0.1",
     port: 6379,
+  },
+  log: {
+    transports: [{
+      type: "console",
+      level: "info"
+    }, {
+      type: "file",
+      filename: "log/app.log",
+      level: "warn"
+    }]
   }
 };
