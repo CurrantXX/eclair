@@ -49,7 +49,7 @@ const userHanlder = {
   }
 };
 
-router.use(transaction())
+export default router.use(transaction())
   .use(async(ctx, next) => {
     ctx.userService = new UserService(ctx.tx);
     await next();
@@ -69,8 +69,3 @@ router.use(transaction())
   .get("/:userId", userHanlder.getDetail)
   .put("/:userId", userHanlder.modify)
   .delete("/:userId", userHanlder.delete);
-
-export {
-  router as
-  default
-};
