@@ -1,7 +1,5 @@
-const Router = require("koa-router");
-const bodyParser = require("koa-bodyparser");
-const validator = require("validator");
-const GameService = require("../service/game.js");
+import Router from "koa-router";
+import GameService from "../service/game.js";
 
 const router = new Router();
 
