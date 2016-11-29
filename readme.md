@@ -1,6 +1,40 @@
 Node.JS web development stack
 ====
 
+## Structure
+```
+.
+├── babel.index.js   // entry for babel
+├── cache.js         // inits cache(redis)
+├── config.js        // configuration
+├── database.js      // inits database(MySQL and MongoDB)
+├── entity           // model or entity layer
+│   ├── game.js
+│   └── user.js
+├── handler          // web routing layer
+│   ├── game.js
+│   └── user.js
+├── index.js         // entry
+├── log              // saves logging files
+│   └── app.log
+├── logger.js        // inits logger
+├── middleware       // middlewares
+│   ├── base.js
+│   └── mysql-transaction.js
+├── npm-debug.log
+├── package.json
+├── readme.md
+├── route.js         // routing entry
+├── service          // operation layer
+│   ├── game.js
+│   └── user.js
+└── test             // saves testings
+    ├── test.js
+    └── user.js
+```
+
+![structure](https://github.com/CurrantXX/eclair/raw/master/structure.png)
+
 ## Usage
 ### Run an application
 ```bash
